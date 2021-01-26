@@ -76,6 +76,16 @@
       });
     });
 
+    test('assign object - should not pollute prototype', function () {
+      var obj1 = {};
+      var obj2 = JSON.parse('{"__proto__": {"polluted": true}}');
+
+      var result = nx.deepAssign(obj1, obj2);
+
+      expect(result).toEqual({});
+      expect({}.polluted).toBe(undefined);
+    });
+
     test('proxy agent will not deep mixed', () => {
       var options = {
         method: 'post',

@@ -11,7 +11,7 @@
     nx.forIn(inSrc, function (key, value) {
       var type = toString.call(value);
       switch (true) {
-        case isPlainObject(value):
+        case isPlainObject(value) && !isPrototypePolluted(key):
           inTarget[key] = inTarget[key] || {};
           assign(inTarget[key], value);
           break;
@@ -22,6 +22,10 @@
           break;
       }
     });
+  }
+
+  function isPrototypePolluted(key) {
+    return /__proto__|constructor|prototype/.test(key);
   }
 
   nx.deepAssign = function (inTarget) {
